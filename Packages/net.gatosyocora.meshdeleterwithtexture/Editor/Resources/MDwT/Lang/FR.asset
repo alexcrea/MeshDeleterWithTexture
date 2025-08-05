@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab925fdc50baf47479726bcae87997f3, type: 3}
+  m_Name: FR
+  m_EditorClassIdentifier: 
+  language: 2
+  rendererLabelText: Renderer
+  scaleLabelText: Échelle
+  resetButtonText: Réinitialiser
+  importDeleteMaskButtonText: Importé Mask Supression
+  exportDeleteMaskButtonText: Exporté Mask Supression
+  dragAndDropDeleteMaskTextureAreaText: Drag & Drop Un Mask De Supression
+  uvMapLineColorLabelText: Couleur De Ligne UVMap
+  exportUvMapButtonText: Exporté L'UVMap
+  textureLabelText: Texture (Materiaux)
+  toolsTitleText: Outils
+  drawTypeLabelText: Mode De Dessin
+  penToolNameText: PINCEAUX
+  eraserToolNameText: GOMME
+  selectToolNameText: SELECTION
+  penColorLabelText: Couleur
+  colorBlackButtonText: Noir
+  colorRedButtonText: R
+  colorGreenButtonText: V
+  colorBlueButtonText: B
+  penEraserSizeLabelText: Taille Piceaux/Gomme
+  inverseSelectAreaButtonText: Inversé La Selection
+  applySelectAreaButtonText: Appliqué La Selection
+  inverseFillAreaButtonText: Inversé Dessin
+  clearAllDrawingButtonText: Effacer Dessin 
+  undoDrawingButtonText: Défaire Changement
+  modelInformationTitleText: Information Sur Le Model
+  triangleCountLabelText: Nombre de Triangles
+  outputMeshTitleText: Mesh De Sortie
+  saveFolderLabelText: SaveFolder
+  selectFolderButtonText: Select Dossier
+  outputFileNameLabelText: Nom
+  revertMeshToPrefabButtonText: Reprendre Mesh Du Préfab
+  revertMeshToPreviouslyButtonText: Retour Mesh Précedent
+  deleteMeshButtonText: Supression Des Polygones
+  androidNotSupportMessageText: 'Cette outil ne peut être utilisé avec le BuildTarget ''Android''.
+
+    Merci de changé le BuildTarget en PC'
+  errorDialogTitleText: Une erreur s'est produite
+  notFoundVerticesExceptionDialogMessageText: Aucun sommet n'a été supprimé.
+  errorDialogOkText: OK
+  helpButtonText: Aide
