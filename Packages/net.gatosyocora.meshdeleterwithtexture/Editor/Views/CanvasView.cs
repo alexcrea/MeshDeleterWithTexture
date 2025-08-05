@@ -16,6 +16,7 @@ namespace Gatosyocora.MeshDeleterWithTexture.Views
 
         private const int LEFT_BUTTON = 0;
         private const int RIGHT_BUTTON = 1;
+        private const int MIDDLE_BUTTON = 2;
 
         private const int PADDING_SIZE = 6;
 
@@ -175,8 +176,9 @@ namespace Gatosyocora.MeshDeleterWithTexture.Views
                     ZoomScale = scale;
                 }
                 // テクスチャの表示箇所を移動する機能
-                else if (Event.current.button == RIGHT_BUTTON &&
-                    mouseEventType == EventType.MouseDrag)
+                else if ((Event.current.button == RIGHT_BUTTON ||
+                          Event.current.button == MIDDLE_BUTTON) &&
+                         mouseEventType == EventType.MouseDrag)
                 {
                     ScrollOffset = UpdateScrollOffset(ScrollOffset, delta, rect.size, ZoomScale);
                 }
