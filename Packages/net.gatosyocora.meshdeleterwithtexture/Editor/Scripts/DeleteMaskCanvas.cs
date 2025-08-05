@@ -11,12 +11,14 @@ namespace Gatosyocora.MeshDeleterWithTexture
         private ComputeBuffer buffer;
         private Texture2D texture;
         private RenderTexture previewTexture;
+        private Vector2Int textureSize;
 
-        public DeleteMaskCanvas(ref ComputeBuffer buffer, Texture2D texture, ref RenderTexture previewTexture)
+        public DeleteMaskCanvas(ref ComputeBuffer buffer, Texture2D texture, ref RenderTexture previewTexture, Vector2Int textureSize)
         {
             this.buffer = buffer;
             this.texture = texture;
             this.previewTexture = previewTexture;
+            this.textureSize = textureSize;
         }
 
         /// <summary>
@@ -41,16 +43,16 @@ namespace Gatosyocora.MeshDeleterWithTexture
         /// <param name="deletePos"></param>
         public void ExportDeleteMaskTexture()
         {
-            var height = texture.height;
-            var width = texture.width;
+            var width = textureSize.x;
+            var height = textureSize.y;
             var maskTexture = new Texture2D(width, height);
 
             var deletePos = new int[width * height];
             buffer.GetData(deletePos);
 
-            for (int j = 0; j < height; j++)
+            for (var j = 0; j < height; j++)
             {
-                for (int i = 0; i < width; i++)
+                for (var i = 0; i < width; i++)
                 {
                     var c = (deletePos[j * width + i] == 1) ? UnityEngine.Color.black : UnityEngine.Color.white;
                     maskTexture.SetPixel(i, j, c);
@@ -87,7 +89,9 @@ namespace Gatosyocora.MeshDeleterWithTexture
             var maskTexture = new Texture2D(0, 0);
             maskTexture.LoadImage(binaryData);
 
-            if (maskTexture == null || texture.width != maskTexture.width || texture.height != maskTexture.height) return false;
+            // TODO better warning for the user
+            // Maybe scale the use provided texture instead ?
+            if (maskTexture == null || textureSize.x != maskTexture.width || textureSize.y != maskTexture.height) return false;
 
             var deletePos = new int[maskTexture.width * maskTexture.height];
             buffer.GetData(deletePos);

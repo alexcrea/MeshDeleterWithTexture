@@ -28,7 +28,7 @@ namespace Gatosyocora.MeshDeleterWithTexture
             var undoTexture = new RenderTexture(texture);
             Graphics.CopyTexture(texture, undoTexture);
             undoTextures[undoIndex] = undoTexture;
-            var undoBuffer = new int[texture.width * texture.height];
+            var undoBuffer = new int[buffer.count];
             buffer.GetData(undoBuffer);
             undoBuffers[undoIndex] = undoBuffer;
         }

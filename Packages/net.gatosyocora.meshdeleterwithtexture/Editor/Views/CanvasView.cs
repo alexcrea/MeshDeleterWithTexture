@@ -2,6 +2,7 @@
 using Gatosyocora.MeshDeleterWithTexture.Utilities;
 using System;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -49,6 +50,7 @@ namespace Gatosyocora.MeshDeleterWithTexture.Views
         private bool isDrawingStraight = false;
         private StraightType straightType = StraightType.NONE;
 
+        //public Texture2D previewSizeGetter; // badly named and temp but better than nothing
         public RenderTexture previewTexture;
 
         private DrawType _drawType;
@@ -134,7 +136,7 @@ namespace Gatosyocora.MeshDeleterWithTexture.Views
 
             var patternTexture = AssetRepository.LoadSelectTextureAreaPatternTexture();
             editMat.SetTexture(MAT_VARIABLE_SELECT_AREA_PATTERN_TEX, patternTexture);
-            editMat.SetFloat(MAT_VARIABLE_SELECT_AREA_PATTERN_TEX_SIZE, patternTexture.width);
+            editMat.SetFloat(MAT_VARIABLE_SELECT_AREA_PATTERN_TEX_SIZE, 1); // was patternTexture.width instead of 1, but 1 seems to work fine/better ?
 
             editMat.SetInt(MAT_VARIABLE_IS_ERASER, DrawType == DrawType.ERASER ? 1 : 0);
 
@@ -211,6 +213,36 @@ namespace Gatosyocora.MeshDeleterWithTexture.Views
             }
         }
 
+        // from https://discussions.unity.com/t/get-the-real-texture-size/129825/2 a bit modified
+        public static void GetTextureOriginalWidthAndHeight(TextureImporter texImpoter, out int width, out int height)
+        {
+            if (texImpoter == null)
+                throw new NullReferenceException("texture");
+            
+            var type = typeof(TextureImporter);
+            var method = type.GetMethod("GetWidthAndHeight", BindingFlags.Instance | BindingFlags.NonPublic);
+            var args = new object[2];
+            method.Invoke(texImpoter, args);
+            width = (int)args[0];
+            height = (int)args[1];
+        }
+
+        public static void GetTextureOriginalWidthAndHeight(Texture2D texture, out int width, out int height)
+        {
+            if (texture == null)
+                throw new NullReferenceException("texture");
+            
+            var path = AssetDatabase.GetAssetPath(texture);
+            var texImpoter = (TextureImporter)AssetImporter.GetAtPath(path);
+
+            GetTextureOriginalWidthAndHeight(texImpoter, out width, out height);
+        }
+        
+        public static void GetTextureOriginalWidthAndHeight(MaterialInfo materialInfo, out int width, out int height)
+        {
+            GetTextureOriginalWidthAndHeight(materialInfo.Texture, out width, out height);
+        }
+
         /// <summary>
         /// DrawAreaを初期化
         /// </summary>
@@ -226,10 +258,15 @@ namespace Gatosyocora.MeshDeleterWithTexture.Views
                 {
                     DestroyImmediate(editTexture);
                 }
-                editTexture = TextureUtility.GenerateTextureToEditting(materialInfo.Texture);
-                textureSize = new Vector2Int(materialInfo.Texture.width, materialInfo.Texture.height);
 
-                editMat.SetVector(MAT_VARIABLE_MAIN_TEX_SIZE, new Vector4(textureSize.x, textureSize.y, 0, 0));
+                editTexture = TextureUtility.GenerateTextureToEditting(materialInfo.Texture);
+
+                GetTextureRealWidthAndHeight(materialInfo, out var width, out var height);
+
+                textureSize = new Vector2Int(width, height);
+                editTexture.Reinitialize(width, height);
+
+                editMat.SetVector(MAT_VARIABLE_MAIN_TEX_SIZE, new Vector4(width, height, 0, 0));
 
                 ClearAllDrawing(materialInfo);
 
@@ -246,6 +283,7 @@ namespace Gatosyocora.MeshDeleterWithTexture.Views
                 {
                     DestroyImmediate(previewMaterial);
                 }
+
                 previewMaterial = new Material(materials[materialInfo.MaterialSlotIndices[0]])
                 {
                     name = PREVIEW_MATERIAL_NAME,
@@ -254,6 +292,7 @@ namespace Gatosyocora.MeshDeleterWithTexture.Views
                 materials[materialInfo.MaterialSlotIndices[0]] = previewMaterial;
                 renderer.sharedMaterials = materials;
             }
+
             ResetScrollOffsetAndZoomScale();
         }
 
@@ -274,11 +313,23 @@ namespace Gatosyocora.MeshDeleterWithTexture.Views
             if (previewTexture != null)
             {
                 previewTexture.Release();
+                //DestroyImmediate(previewSizeGetter);
             }
 
+            //idk why but it break things
+            /*previewSizeGetter = TextureUtility.GenerateTextureToEditting(materialInfo.Texture);
+            previewSizeGetter.Reinitialize(textureSize.x, textureSize.y); 
+            
+            previewTexture = TextureUtility.CopyTexture2DToRenderTexture(previewSizeGetter, textureSize,
+                PlayerSettings.colorSpace == ColorSpace.Linear);
+            canvasModel.Initialize(ref editTexture, ref previewTexture, textureSize);
+            
+            deleteMask = new DeleteMaskCanvas(ref canvasModel.buffer, previewSizeGetter, ref previewTexture);*/
+            
+            // almost original code. replace thing above that seems to break
             previewTexture = TextureUtility.CopyTexture2DToRenderTexture(materialInfo.Texture, textureSize, PlayerSettings.colorSpace == ColorSpace.Linear);
-            canvasModel.Initialize(ref editTexture, ref previewTexture);
-            deleteMask = new DeleteMaskCanvas(ref canvasModel.buffer, materialInfo.Texture, ref previewTexture);
+            canvasModel.Initialize(ref editTexture, ref previewTexture, textureSize);
+            deleteMask = new DeleteMaskCanvas(ref canvasModel.buffer, materialInfo.Texture, ref previewTexture, textureSize);
         }
 
         public void ClearAllDrawing()

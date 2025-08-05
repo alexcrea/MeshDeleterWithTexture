@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Gatosyocora.MeshDeleterWithTexture.Views;
 using UnityEngine;
 
 namespace Gatosyocora.MeshDeleterWithTexture
@@ -55,9 +56,9 @@ namespace Gatosyocora.MeshDeleterWithTexture
                 selectAreaRT.Release();
             }
 
-            var texture = materialInfo.Texture;
+            CanvasView.GetTextureRealWidthAndHeight(materialInfo, out var width, out var height);
 
-            selectAreaRT = new RenderTexture(texture.width, texture.height, 0)
+            selectAreaRT = new RenderTexture(width, height, 0)
             {
                 enableRandomWrite = true
             };

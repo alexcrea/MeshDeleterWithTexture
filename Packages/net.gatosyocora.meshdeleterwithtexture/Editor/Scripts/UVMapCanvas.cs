@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Gatosyocora.MeshDeleterWithTexture.Views;
 using UnityEditor;
 using UnityEngine;
 
@@ -75,8 +76,10 @@ namespace Gatosyocora.MeshDeleterWithTexture
 
             ComputeShader cs = Object.Instantiate(AssetRepository.LoadCreateUVMapComputeShader());
             int kernel = cs.FindKernel("CSMain");
+            
+            CanvasView.GetTextureRealWidthAndHeight(matInfo, out var width, out var height);
 
-            var uvMapRT = new RenderTexture(texture.width, texture.height, 0, RenderTextureFormat.ARGB32)
+            var uvMapRT = new RenderTexture(width, height, 0, RenderTextureFormat.ARGB32)
             {
                 enableRandomWrite = true,
                 anisoLevel = texture.anisoLevel,
@@ -95,8 +98,8 @@ namespace Gatosyocora.MeshDeleterWithTexture
             uvBuffer.SetData(uvs);
 
             cs.SetTexture(kernel, CS_VARIABLE_UVMAP, uvMapRT);
-            cs.SetInt(CS_VARIABLE_WIDTH, texture.width);
-            cs.SetInt(CS_VARIABLE_HEIGHT, texture.height);
+            cs.SetInt(CS_VARIABLE_WIDTH, width);
+            cs.SetInt(CS_VARIABLE_HEIGHT, height);
             cs.SetBuffer(kernel, CS_VARIABLE_TRIANGLES, triangleBuffer);
             cs.SetBuffer(kernel, CS_VARIABLE_UVS, uvBuffer);
 
@@ -105,7 +108,7 @@ namespace Gatosyocora.MeshDeleterWithTexture
             triangleBuffer.Release();
             uvBuffer.Release();
 
-            Texture2D uvMapTex = new Texture2D(texture.width, texture.height, TextureFormat.RGB24, false)
+            Texture2D uvMapTex = new Texture2D(width, height, TextureFormat.RGB24, false)
             {
                 name = texture.name
             };
