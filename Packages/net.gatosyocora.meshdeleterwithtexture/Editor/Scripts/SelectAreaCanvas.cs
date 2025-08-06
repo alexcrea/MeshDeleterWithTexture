@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Gatosyocora.MeshDeleterWithTexture
 {
-    public class SelectAreaCanvas : MonoBehaviour
+    public class SelectAreaCanvas
     {
         private const string CS_VARIABLE_PEN_SIZE = "PenSize";
         private const string CS_VARIABLE_PREVIOUS_POINT = "PreviousPoint";
