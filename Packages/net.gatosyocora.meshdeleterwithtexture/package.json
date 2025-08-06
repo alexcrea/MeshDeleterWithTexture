@@ -1,7 +1,7 @@
 {
   "name": "net.gatosyocora.meshdeleterwithtexture",
   "displayName": "MeshDeleterWithTexture",
-  "version": "0.10.7",
+  "version": "0.10.8",
   "description": "Unit editor extension to remove polygons with drawing on texture",
   "license": "MIT",
   "author": {
@@ -16,5 +16,5 @@
     "Assets\\MeshDeleterWithTexture" : "3450b4f13ca210444989c4b0dbbe567b"
   },
   "legacyFiles": {},
-  "url": "https://github.com/alexcrea/MeshDeleterWithTexture/releases/download/v0.10.7/MeshDeleterWithTexture_v0.10.7.zip"
+  "url": "https://github.com/alexcrea/MeshDeleterWithTexture/releases/download/v0.10.8/MeshDeleterWithTexture_v0.10.8.zip"
 }

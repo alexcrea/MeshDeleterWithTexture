@@ -70,12 +70,13 @@ namespace Gatosyocora.MeshDeleterWithTexture.Models
         /// <param name="subMeshIndexInDeletedVertex"></param>
         private bool DeleteMesh(Renderer renderer, bool[] deletePos, MaterialInfo matInfo)
         {
-            var texture = matInfo.Texture;
             var materialIndexList = matInfo.MaterialSlotIndices;
 
             var mesh = RendererUtility.GetMesh(renderer);
             var materials = renderer.sharedMaterials.ToArray();
-            var textureSize = new Vector2Int(texture.width, texture.height);
+            
+            CanvasView.GetTextureOriginalWidthAndHeight(matInfo, out var width, out var height);
+            var textureSize = new Vector2Int(width, height);
             var (deletedMesh, hadDeletedSubMeshes) = MeshDeleter.RemoveTriangles(mesh, deletePos, textureSize, materialIndexList);
 
             if (meshName == "") meshName = mesh.name + MESH_SUFFIX;
