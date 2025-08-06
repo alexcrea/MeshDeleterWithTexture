@@ -77,7 +77,7 @@ namespace Gatosyocora.MeshDeleterWithTexture
             ComputeShader cs = Object.Instantiate(AssetRepository.LoadCreateUVMapComputeShader());
             int kernel = cs.FindKernel("CSMain");
             
-            CanvasView.GetTextureRealWidthAndHeight(matInfo, out var width, out var height);
+            CanvasView.GetTextureOriginalWidthAndHeight(matInfo, out var width, out var height);
 
             var uvMapRT = new RenderTexture(width, height, 0, RenderTextureFormat.ARGB32)
             {

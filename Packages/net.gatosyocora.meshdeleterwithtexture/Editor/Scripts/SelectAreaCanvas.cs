@@ -56,7 +56,7 @@ namespace Gatosyocora.MeshDeleterWithTexture
                 selectAreaRT.Release();
             }
 
-            CanvasView.GetTextureRealWidthAndHeight(materialInfo, out var width, out var height);
+            CanvasView.GetTextureOriginalWidthAndHeight(materialInfo, out var width, out var height);
 
             selectAreaRT = new RenderTexture(width, height, 0)
             {

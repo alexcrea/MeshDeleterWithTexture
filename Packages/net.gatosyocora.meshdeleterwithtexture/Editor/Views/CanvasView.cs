@@ -263,7 +263,7 @@ namespace Gatosyocora.MeshDeleterWithTexture.Views
 
                 editTexture = TextureUtility.GenerateTextureToEditting(materialInfo.Texture);
 
-                GetTextureRealWidthAndHeight(materialInfo, out var width, out var height);
+                GetTextureOriginalWidthAndHeight(materialInfo, out var width, out var height);
 
                 textureSize = new Vector2Int(width, height);
                 editTexture.Reinitialize(width, height);
