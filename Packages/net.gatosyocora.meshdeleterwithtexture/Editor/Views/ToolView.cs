@@ -95,11 +95,17 @@ namespace Gatosyocora.MeshDeleterWithTexture.Views
 
                     EditorGUILayout.Space();
 
+                    var textureWidth = 0;
+                    if (model.HasTexture())
+                    {
+                        CanvasView.GetTextureOriginalWidthAndHeight(model.Texture, out textureWidth, out _); 
+                    }
+
                     GatoGUILayout.IntSlider(
                         localizedText.Data.penEraserSizeLabelText,
                         canvasView.PenSize,
                         1,
-                        !model.HasTexture() ? 100 : model.Texture.width / 20,
+                        !model.HasTexture() ? 100 : textureWidth / 20,
                         penSize => canvasView.PenSize = penSize,
                         widthOption
                     );
