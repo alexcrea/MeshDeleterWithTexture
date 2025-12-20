@@ -38,7 +38,7 @@ namespace Gatosyocora.MeshDeleterWithTexture.Models
         /// </summary>
         /// <param name="texture"></param>
         /// <param name="previewTexture"></param>
-        public void Initialize(ref Texture2D texture, ref RenderTexture previewTexture, Vector2Int textureSize)
+        public void Initialize(ref RenderTexture texture, ref RenderTexture previewTexture, Vector2Int textureSize)
         {
             if (buffer != null) buffer.Release();
             buffer = new ComputeBuffer(textureSize.x * textureSize.y, sizeof(int));

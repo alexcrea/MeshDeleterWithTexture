@@ -5,14 +5,9 @@ namespace Gatosyocora.MeshDeleterWithTexture.Utilities
 {
     public static class TextureUtility
     {
-        public static RenderTexture CopyTexture2DToRenderTexture(Texture2D texture, Vector2Int textureSize, bool isLinearColorSpace = false)
+        public static RenderTexture CopyTexture2DToRenderTexture(Texture2D texture, Vector2Int textureSize)
         {
-            RenderTexture renderTexture;
-
-            if (isLinearColorSpace)
-                renderTexture = new RenderTexture(textureSize.x, textureSize.y, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
-            else
-                renderTexture = new RenderTexture(textureSize.x, textureSize.y, 0, RenderTextureFormat.ARGB32);
+            RenderTexture renderTexture = new RenderTexture(textureSize.x, textureSize.y, 0, RenderTextureFormat.ARGB32);
 
             renderTexture.enableRandomWrite = true;
             renderTexture.anisoLevel = texture.anisoLevel;
