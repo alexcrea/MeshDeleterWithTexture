@@ -328,9 +328,10 @@ namespace Gatosyocora.MeshDeleterWithTexture.Views
             
             deleteMask = new DeleteMaskCanvas(ref canvasModel.buffer, previewSizeGetter, ref previewTexture);*/
 
-			var original = TextureUtility.CopyTexture2DToRenderTexture(materialInfo.Texture, textureSize);
+			var isLinearColorSpace = PlayerSettings.colorSpace == ColorSpace.Linear;
+			var original = TextureUtility.CopyTexture2DToRenderTexture(materialInfo.Texture, textureSize, isLinearColorSpace);
 
-            previewTexture = TextureUtility.CopyTexture2DToRenderTexture(materialInfo.Texture, textureSize);
+            previewTexture = TextureUtility.CopyTexture2DToRenderTexture(materialInfo.Texture, textureSize, isLinearColorSpace);
             canvasModel.Initialize(ref original, ref previewTexture, textureSize);
             deleteMask = new DeleteMaskCanvas(ref canvasModel.buffer, materialInfo.Texture, ref previewTexture, textureSize);
         }
